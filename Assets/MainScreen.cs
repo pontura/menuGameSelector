@@ -93,7 +93,12 @@ public class MainScreen : MonoBehaviour
     IEnumerator LoadNewGame()
     {
         ExecuteProgramm("C:/videogames/mainMenu/reset.bat");
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.1f);
+        if (gameItems[gameID].data.joyToKey)
+        {
+            ExecuteProgramm("C:/videogames/games/" + gameItems[gameID].data.folder + "/joyToKey/JoyToKey.exe");
+            yield return new WaitForSeconds(1);
+        }        
         ExecuteProgramm("C:/videogames/games/" + gameItems[gameID].data.folder + "/" + gameItems[gameID].data.file);
     }
     void ExecuteProgramm(string url)

@@ -9,5 +9,5 @@ public class GameData {
     public string image;
     public string folder;
     public string file;
-    
+    public bool joyToKey;
 }
