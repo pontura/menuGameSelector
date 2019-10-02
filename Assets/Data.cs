@@ -38,6 +38,7 @@ public class Data : MonoBehaviour
             Destroy(this.gameObject);
             return;
         }
+        Screen.fullScreen = true;
     }
 
 }

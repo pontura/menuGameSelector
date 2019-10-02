@@ -13,15 +13,25 @@ public class MainScreen : MonoBehaviour
     int totalSlots = 3;
     Settings.GamesData gamesData;
     Vector3 offset = new Vector2(400, 300);
+    bool isLoadingGame;
+
     public void Init()
     {
         Events.Next += Next;
         Events.Prev += Prev;
         Events.RunGame += RunGame;
 
+        //ExecuteProgramm("C:/videogames/reset.bat");
+      //  ExecuteProgramm("C:/videogames/mainMenu/joyToKey/JoyToKeys.exe");
 
         Load();
         SetGame();
+    }
+    private void Reset()
+    {
+        //Events.Next -= Next;
+        //Events.Prev -= Prev;
+        //Events.RunGame -= RunGame;
     }
     private void Load()
     {
@@ -65,6 +75,8 @@ public class MainScreen : MonoBehaviour
     }
     void Prev()
     {
+        if (isLoadingGame)
+            return;
         ResetItem();
         gameID++;
         if (gameID > Data.Instance.settings.data.games.Length-1)
@@ -73,6 +85,8 @@ public class MainScreen : MonoBehaviour
     }
     void Next()
     {
+        if (isLoadingGame)
+            return;
         ResetItem();
         gameID--;
         if (gameID < 0)
@@ -85,6 +99,9 @@ public class MainScreen : MonoBehaviour
     }
     void RunGame()
     {
+        if (isLoadingGame)
+            return;
+        Reset();
         if (Data.Instance.loaderMask.state == LoaderMask.states.LOADING)
             return;
         Data.Instance.loaderMask.Init();
@@ -92,14 +109,20 @@ public class MainScreen : MonoBehaviour
     }
     IEnumerator LoadNewGame()
     {
-        ExecuteProgramm("C:/videogames/mainMenu/reset.bat");
-        yield return new WaitForSeconds(0.1f);
-        if (gameItems[gameID].data.joyToKey)
-        {
-            ExecuteProgramm("C:/videogames/games/" + gameItems[gameID].data.folder + "/joyToKey/JoyToKey.exe");
-            yield return new WaitForSeconds(1);
-        }        
+        isLoadingGame = true;
+       // ExecuteProgramm("C:/videogames/mainMenu/OpenNewGame.bat");
+        // ExecuteProgramm("C:/videogames/mainMenu/reset.bat");
+        // ExecuteProgramm("C:/videogames/reset.bat");
+        //yield return new WaitForSeconds(0.1f);
+        //if (gameItems[gameID].data.joyToKey)
+        //{
+        //   // ExecuteProgramm("C:/videogames/games/" + gameItems[gameID].data.folder + "/joyToKey/JoyToKey.exe");
+        //    yield return new WaitForSeconds(0.1f);
+        //}        
         ExecuteProgramm("C:/videogames/games/" + gameItems[gameID].data.folder + "/" + gameItems[gameID].data.file);
+        yield return new WaitForSeconds(3);
+        isLoadingGame = false;
+        // Application.Quit();
     }
     void ExecuteProgramm(string url)
     {

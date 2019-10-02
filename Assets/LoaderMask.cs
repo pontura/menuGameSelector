@@ -24,7 +24,7 @@ public class LoaderMask : MonoBehaviour
         if (state == states.DONE)
             return;
         timer += Time.deltaTime;
-        if(timer>3)
+        if(timer>1)
         {
             state = states.DONE;
             panel.SetActive(false);
